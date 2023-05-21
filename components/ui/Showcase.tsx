@@ -1,11 +1,13 @@
 import type { ComponentChildren } from "preact";
+import Image from "deco-sites/std/components/Image.tsx";
+import { asset } from "$fresh/runtime.ts";
 
 type ShowcaseProps = {
   icon: ComponentChildren;
   subtitle: string;
   title: string;
   imageHref: string;
-  align?: string;
+  align: "left" | "right";
 };
 
 function Showcase({
@@ -30,24 +32,32 @@ function Showcase({
     right: "text-left",
   };
 
+  const alignImg = {
+    left: "self-start",
+    right: "self-end",
+  };
+
   return (
     <div
-      className={`flex flex-col ${items[align as "left" | "right"]} ${
-        padding[align as "left" | "right"]
-      }`}
+      className={`flex flex-col mb-64 ${items[align]} ${padding[align]}`}
     >
       {icon}
-      <p className={`${text[align as "left" | "right"]} text-md my-4 text-gray-600`}>
+      <p
+        className={`${text[align]} text-md my-4 text-gray-600`}
+      >
         {subtitle}
       </p>
       <h1
         className={`${
-          text[align as "left" | "right"]
-        } leading-normal text-4xl w-4/5 text-gray-100`}
+          text[align]
+        } mb-12 leading-normal text-4xl w-4/5 text-gray-100`}
       >
         {title}
       </h1>
-      <img href={imageHref} />
+      <img
+        className={alignImg[align]}
+        src={asset(imageHref)}
+      />
     </div>
   );
 }
